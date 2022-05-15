@@ -238,8 +238,8 @@ class TabNetEncoder(Module):
             n_d: int = 8,
             n_a: int = 8,
             n_att: int = 8,
-            n_independent_att: int = 1,
-            n_shared_att: int = 1,
+            n_independent_att: int = 2,
+            n_shared_att: int = 2,
             n_independent_out: int = 2,
             n_shared_out: int = 2,
             n_steps: int = 3,
@@ -396,7 +396,7 @@ class TabNetEncoder(Module):
         steps_output = []
         for step in range(self.n_steps):
             info = self.feat_transformers_att[step](x) if self.ft_att else None
-            M = self.att_transformers[step](prior, torch.cat([att, info], dim=1) if info else att)
+            M = self.att_transformers[step](prior, torch.cat([att, info], dim=1) if self.ft_att else att)
             M_loss += torch.mean(
                 torch.sum(torch.mul(M, torch.log(M + self.epsilon)), dim=1)
             )
@@ -446,7 +446,7 @@ class TabNetDecoder(Module):
             input_dim: int,
             n_d: int = 8,
             n_steps: int = 3,
-            n_independent: int = 2,
+            n_independent_out: int = 2,
             n_shared: int = 2,
             virtual_batch_size: int = 128,
             momentum: float = 0.02,
@@ -480,7 +480,7 @@ class TabNetDecoder(Module):
         self.input_dim = input_dim
         self.n_d = n_d
         self.n_steps = n_steps
-        self.n_independent = n_independent
+        self.n_independent_out = n_independent_out
         self.n_shared = n_shared
         self.virtual_batch_size = virtual_batch_size
 
@@ -503,7 +503,7 @@ class TabNetDecoder(Module):
                 n_d,
                 n_d,
                 shared_feat_transform,
-                n_glu_independent=self.n_independent,
+                n_glu_independent=self.n_independent_out,
                 virtual_batch_size=self.virtual_batch_size,
                 momentum=momentum,
             )
@@ -712,7 +712,7 @@ class TabNetPretraining(Module):
             self.post_embed_dim,
             n_d=n_d,
             n_steps=n_steps,
-            n_independent=n_independent_out,
+            n_independent_out=n_independent_out,
             n_shared=n_shared_out,
             virtual_batch_size=virtual_batch_size,
             momentum=momentum,
@@ -950,8 +950,8 @@ class TabNet(Module):
 
         if self.n_steps <= 0:
             raise ValueError("n_steps should be a positive integer.")
-        if self.n_independent == 0 and self.n_shared == 0:
-            raise ValueError("n_shared and n_independent can't be both zero.")
+        if self.n_independent_out == 0 and self.n_shared_out == 0:
+            raise ValueError("n_shared_out and n_independent_out can't be both zero.")
 
         self.embedder = EmbeddingGenerator(input_dim, cat_dims, cat_idxs, cat_emb_dim)
         self.post_embed_dim = self.embedder.post_embed_dim
