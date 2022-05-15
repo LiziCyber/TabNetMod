@@ -22,7 +22,8 @@ from tabnet.metrics import (
     MetricContainer
 )
 from dataclasses import dataclass, field
-from typing import List, Any, Dict, Union, Literal
+from typing import List, Any, Dict, Union
+from typing_extensions import Literal
 from torch.nn.utils import clip_grad_norm_
 from scipy.sparse import csc_matrix
 from abc import abstractmethod

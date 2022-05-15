@@ -3,7 +3,8 @@ from torch.nn import Linear, BatchNorm1d, ReLU, Module, ModuleList
 from torch import Tensor
 import numpy as np
 from tabnet import sparsemax
-from typing import Union, List, Literal, Optional
+from typing import Union, List, Optional
+from typing_extensions import Literal
 import warnings
 
 MASK_TYPE = Literal["sparsemax", "entmax"]
