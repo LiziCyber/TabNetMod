@@ -961,7 +961,7 @@ class TabNetPretrainer(TabModel):
         self.virtual_batch_size = virtual_batch_size
         self.num_workers = num_workers
         self.drop_last = drop_last
-        self.input_dim = train_dataset[0].shape[0]
+        self.input_dim = train_dataset[0][0].shape[0] if type(train_dataset[0]) is tuple else train_dataset[0].shape[0]
         self._stop_training = False
         self.pin_memory = pin_memory and (self.device.type != "cpu")
         self.pretraining_ratio = pretraining_ratio
