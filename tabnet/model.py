@@ -1127,7 +1127,8 @@ class TabNetPretrainer(TabModel):
 
         for batch_idx, X in enumerate(tqdm(train_loader)):
             self._callback_container.on_batch_begin(batch_idx)
-
+            if type(X) is list:
+                X = X[0]
             batch_logs = self._train_batch(X)
 
             self._callback_container.on_batch_end(batch_idx, batch_logs)
