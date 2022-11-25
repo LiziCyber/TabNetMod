@@ -893,15 +893,13 @@ class TabNetRegressor(TabModel):
         eval_datasets,
         weights
     ):
-        '''if len(train_dataset[0][1].shape) != 2:
+        if len(train_dataset[0][1].shape) != 2:
             msg = "Targets should be 2D : (n_samples, n_regression) \n" + \
                   "Use reshape(-1, 1) for single regression."
-            raise ValueError(msg)'''
-        if len(train_dataset[0][1].shape) != 2:
-            self.output_dim = 1
-        else:
-            self.output_dim = train_dataset[0][1].shape[1]
+            raise ValueError(msg)
+        self.output_dim = train_dataset[0][1].shape[1]
         self.preds_mapper = None
+
         self.updated_weights = weights
         filter_weights(self.updated_weights)
 
