@@ -300,6 +300,10 @@ class ComplexEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, np.int64) or isinstance(obj, np.int32):
             return int(obj)
+
+        if isinstance(obj, np.float32) or isinstance(obj, np.float64):
+            return float(obj)
+
         # Let the base class default method raise the TypeError
         return json.JSONEncoder.default(self, obj)
 
