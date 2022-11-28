@@ -258,14 +258,14 @@ def validate_eval_set(eval_datasets, eval_name, train_dataset):
         train_dataset[0][0].shape == eval_dataset[0][0].shape for eval_dataset in eval_datasets
     ), "the shapes of the X from eval_datasets are not compatible with train_dataset"
 
-    assert all(
+    '''assert all(
         train_dataset.train == eval_dataset.train for eval_dataset in eval_datasets
     ), "the parameter \'train\' from eval_datasets are not compatible with train_dataset"
 
     if train_dataset.train:
         assert all(
             train_dataset[0][1].shape == eval_dataset[0][1].shape for eval_dataset in eval_datasets
-        ), "the shapes of the y from eval_datasets are not compatible with train_dataset"
+        ), "the shapes of the y from eval_datasets are not compatible with train_dataset"'''
 
     return eval_name, eval_datasets
 
